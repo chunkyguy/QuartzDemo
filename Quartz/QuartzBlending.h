@@ -1,6 +1,6 @@
 /*
-     File: QuartzView.h
- Abstract: A UIView subclass that is the super class of the other views demonstrated in this sample.
+     File: QuartzBlending.h
+ Abstract: Demonstration of Quartz blending facilities
   Version: 2.2
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -46,12 +46,17 @@
 */
 
 #import <UIKit/UIKit.h>
+#import "QuartzView.h"
 
-@interface QuartzView : UIView
+@interface QuartzBlendingView : QuartzView
 {
+	UIColor *sourceColor;
+	UIColor *destinationColor;
+	CGBlendMode blendMode;
 }
 
-// As a matter of convinience we'll do all of our drawing here in subclasses of QuartzView.
--(void)drawInContext:(CGContextRef)context;
+@property(nonatomic, readwrite, retain) UIColor *sourceColor;
+@property(nonatomic, readwrite, retain) UIColor *destinationColor;
+@property(nonatomic, readwrite) CGBlendMode blendMode;
 
 @end

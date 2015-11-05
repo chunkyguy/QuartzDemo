@@ -1,6 +1,6 @@
 /*
-     File: QuartzView.h
- Abstract: A UIView subclass that is the super class of the other views demonstrated in this sample.
+     File: QuartzBlendingViewController.h
+ Abstract: A QuartzViewController subclass that manages a single QuartzView (that is expected to be of type QuartzBlendingView). This view controller also implements a UIPickerView to allow for the selection of foreground color, background color and blending mode.
   Version: 2.2
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -46,12 +46,11 @@
 */
 
 #import <UIKit/UIKit.h>
+#import "QuartzViewController.h"
 
-@interface QuartzView : UIView
+@interface QuartzBlendingViewController : QuartzViewController<UIPickerViewDelegate, UIPickerViewDataSource>
 {
+	IBOutlet UIPickerView *picker;
 }
-
-// As a matter of convinience we'll do all of our drawing here in subclasses of QuartzView.
--(void)drawInContext:(CGContextRef)context;
 
 @end

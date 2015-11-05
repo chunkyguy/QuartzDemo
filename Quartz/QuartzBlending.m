@@ -1,6 +1,6 @@
 /*
-     File: QuartzView.h
- Abstract: A UIView subclass that is the super class of the other views demonstrated in this sample.
+     File: QuartzBlending.m
+ Abstract: Demonstration of Quartz blending facilities
   Version: 2.2
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,13 +45,50 @@
  
 */
 
-#import <UIKit/UIKit.h>
+#import "QuartzBlending.h"
 
-@interface QuartzView : UIView
+
+@interface QuartzBlendingView()
+@end
+
+@implementation QuartzBlendingView
+
+@synthesize sourceColor, destinationColor, blendMode;
+
+-(id)initWithFrame:(CGRect)frame
 {
+	self = [super initWithFrame:frame];
+	if(self != nil)
+	{
+		sourceColor = [UIColor whiteColor];
+		destinationColor = [UIColor blackColor];
+		blendMode = kCGBlendModeNormal;
+	}
+	return self;
 }
 
-// As a matter of convinience we'll do all of our drawing here in subclasses of QuartzView.
--(void)drawInContext:(CGContextRef)context;
+-(void)dealloc
+{
+	[sourceColor release];
+	[destinationColor release];
+	[super dealloc];
+}
+
+-(void)drawInContext:(CGContextRef)context
+{
+	// Start with a background whose color we don't use in the demo
+	CGContextSetGrayFillColor(context, 0.2, 1.0);
+	CGContextFillRect(context, self.bounds);
+	// We want to just lay down the background without any blending so we use the Copy mode rather than Normal
+	CGContextSetBlendMode(context, kCGBlendModeCopy);
+	// Draw a rect with the "background" color - this is the "Destination" for the blending formulas
+	CGContextSetFillColorWithColor(context, destinationColor.CGColor);
+	CGContextFillRect(context, CGRectMake(110.0, 20.0, 100.0, 100.0));
+	// Set up our blend mode
+	CGContextSetBlendMode(context, blendMode);
+	// And draw a rect with the "foreground" color - this is the "Source" for the blending formulas
+	CGContextSetFillColorWithColor(context, sourceColor.CGColor);
+	CGContextFillRect(context, CGRectMake(60.0, 45.0, 200.0, 50.0));
+}
 
 @end

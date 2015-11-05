@@ -1,58 +1,57 @@
 /*
-
-File: QuartzRenderedDrawing.m
-Abstract: Demonstrations of using Quartz for drawing gradients (GradientDrawing)
-and Patterns (PatternDrawing)
-
-Version: 2.0
-
-Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple Inc.
-("Apple") in consideration of your agreement to the following terms, and your
-use, installation, modification or redistribution of this Apple software
-constitutes acceptance of these terms.  If you do not agree with these terms,
-please do not use, install, modify or redistribute this Apple software.
-
-In consideration of your agreement to abide by the following terms, and subject
-to these terms, Apple grants you a personal, non-exclusive license, under
-Apple's copyrights in this original Apple software (the "Apple Software"), to
-use, reproduce, modify and redistribute the Apple Software, with or without
-modifications, in source and/or binary forms; provided that if you redistribute
-the Apple Software in its entirety and without modifications, you must retain
-this notice and the following text and disclaimers in all such redistributions
-of the Apple Software.
-Neither the name, trademarks, service marks or logos of Apple Inc. may be used
-to endorse or promote products derived from the Apple Software without specific
-prior written permission from Apple.  Except as expressly stated in this notice,
-no other rights or licenses, express or implied, are granted by Apple herein,
-including but not limited to any patent rights that may be infringed by your
-derivative works or by other works in which the Apple Software may be
-incorporated.
-
-The Apple Software is provided by Apple on an "AS IS" basis.  APPLE MAKES NO
-WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION THE IMPLIED
-WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND OPERATION ALONE OR IN
-COMBINATION WITH YOUR PRODUCTS.
-
-IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL OR
-CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
-GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
-ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION, MODIFICATION AND/OR
-DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED AND WHETHER UNDER THEORY OF
-CONTRACT, TORT (INCLUDING NEGLIGENCE), STRICT LIABILITY OR OTHERWISE, EVEN IF
-APPLE HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-Copyright (C) 2008 Apple Inc. All Rights Reserved.
-
+     File: QuartzRenderedDrawing.m
+ Abstract: Demonstrations of using Quartz for drawing gradients (GradientDrawing) and Patterns (PatternDrawing).
+  Version: 2.2
+ 
+ Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
+ Inc. ("Apple") in consideration of your agreement to the following
+ terms, and your use, installation, modification or redistribution of
+ this Apple software constitutes acceptance of these terms.  If you do
+ not agree with these terms, please do not use, install, modify or
+ redistribute this Apple software.
+ 
+ In consideration of your agreement to abide by the following terms, and
+ subject to these terms, Apple grants you a personal, non-exclusive
+ license, under Apple's copyrights in this original Apple software (the
+ "Apple Software"), to use, reproduce, modify and redistribute the Apple
+ Software, with or without modifications, in source and/or binary forms;
+ provided that if you redistribute the Apple Software in its entirety and
+ without modifications, you must retain this notice and the following
+ text and disclaimers in all such redistributions of the Apple Software.
+ Neither the name, trademarks, service marks or logos of Apple Inc. may
+ be used to endorse or promote products derived from the Apple Software
+ without specific prior written permission from Apple.  Except as
+ expressly stated in this notice, no other rights or licenses, express or
+ implied, are granted by Apple herein, including but not limited to any
+ patent rights that may be infringed by your derivative works or by other
+ works in which the Apple Software may be incorporated.
+ 
+ The Apple Software is provided by Apple on an "AS IS" basis.  APPLE
+ MAKES NO WARRANTIES, EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION
+ THE IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY AND FITNESS
+ FOR A PARTICULAR PURPOSE, REGARDING THE APPLE SOFTWARE OR ITS USE AND
+ OPERATION ALONE OR IN COMBINATION WITH YOUR PRODUCTS.
+ 
+ IN NO EVENT SHALL APPLE BE LIABLE FOR ANY SPECIAL, INDIRECT, INCIDENTAL
+ OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ INTERRUPTION) ARISING IN ANY WAY OUT OF THE USE, REPRODUCTION,
+ MODIFICATION AND/OR DISTRIBUTION OF THE APPLE SOFTWARE, HOWEVER CAUSED
+ AND WHETHER UNDER THEORY OF CONTRACT, TORT (INCLUDING NEGLIGENCE),
+ STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
+ POSSIBILITY OF SUCH DAMAGE.
+ 
+ Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ 
 */
 
 #import "QuartzRenderedDrawing.h"
 
-@implementation GradientDrawing
+@implementation GradientDrawingView
 
--(id)init
+-(id)initWithFrame:(CGRect)frame
 {
-	self = [super init];
+	self = [super initWithFrame:frame];
 	if(self != nil)
 	{
 		CGColorSpaceRef rgb = CGColorSpaceCreateDeviceRGB();
@@ -86,7 +85,7 @@ CGPoint demoLGEnd(CGRect bounds)
 	return CGPointMake(bounds.origin.x, bounds.origin.y + bounds.size.height * 0.75);
 }
 
-// Returns the center point for a radial gradient
+// Returns the center point for for the demonstration of the radial gradient
 CGPoint demoRGCenter(CGRect bounds)
 {
 	return CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
@@ -106,9 +105,9 @@ CGFloat demoRGOuterRadius(CGRect bounds)
 	return r * 0.5;
 }
 
--(void)drawView:(QuartzView*)view inContext:(CGContextRef)context bounds:(CGRect)bounds
+-(void)drawInContext:(CGContextRef)context
 {
-	// The clipping rects we plan to use, which also defines the locations of each gradient
+	// The clipping rects we plan to use, which also defines the location and span of each gradient
 	CGRect clips[] =
 	{
 		CGRectMake(10.0, 30.0, 60.0, 90.0),
@@ -142,6 +141,8 @@ CGFloat demoRGOuterRadius(CGRect bounds)
 	CGContextDrawLinearGradient(context, gradient, start, end, 0);
 	CGContextRestoreGState(context);
 	
+	// Same as above for each combination of kCGGradientDrawsBeforeStartLocation & kCGGradientDrawsAfterEndLocation
+	
 	CGContextSaveGState(context);
 	CGContextClipToRect(context, clips[1]);
 	start = demoLGStart(clips[1]);
@@ -167,6 +168,8 @@ CGFloat demoRGOuterRadius(CGRect bounds)
 	
 	CGFloat startRadius, endRadius;
 
+	// Clip to area to draw the gradient, and draw it. Since we are clipping, we save the graphics state
+	// so that we can revert to the previous larger area.
 	CGContextSaveGState(context);
 	CGContextClipToRect(context, clips[4]);
 	
@@ -181,6 +184,8 @@ CGFloat demoRGOuterRadius(CGRect bounds)
 	endRadius = demoRGOuterRadius(clips[4]);
 	CGContextDrawRadialGradient(context, gradient, start, startRadius, end, endRadius, 0);
 	CGContextRestoreGState(context);
+
+	// Same as above for each combination of kCGGradientDrawsBeforeStartLocation & kCGGradientDrawsAfterEndLocation
 
 	CGContextSaveGState(context);
 	CGContextClipToRect(context, clips[5]);
@@ -215,21 +220,19 @@ CGFloat demoRGOuterRadius(CGRect bounds)
 
 @end
 
-@implementation PatternDrawing
+@implementation PatternDrawingView
 
 // Colored patterns specify colors as part of their drawing
 void ColoredPatternCallback(void *info, CGContextRef context)
 {
+	// Dark Blue
 	CGContextSetRGBFillColor(context, 29.0 / 255.0, 156.0 / 255.0, 215.0 / 255.0, 1.00);
-	// Upper Left
 	CGContextFillRect(context, CGRectMake(0.0, 0.0, 8.0, 8.0));
-	// Lower Right
 	CGContextFillRect(context, CGRectMake(8.0, 8.0, 8.0, 8.0));
 	
+	// Light Blue
 	CGContextSetRGBFillColor(context, 204.0 / 255.0, 224.0 / 255.0, 244.0 / 255.0, 1.00);
-	// Upper Right
 	CGContextFillRect(context, CGRectMake(8.0, 0.0, 8.0, 8.0));
-	// Lower Left
 	CGContextFillRect(context, CGRectMake(0.0, 8.0, 8.0, 8.0));
 }
 
@@ -240,9 +243,9 @@ void UncoloredPatternCallback(void *info, CGContextRef context)
 	CGContextFillRect(context, CGRectMake(8.0, 8.0, 8.0, 8.0));
 }
 
--(id)init
+-(id)initWithFrame:(CGRect)frame
 {
-	self = [super init];
+	self = [super initWithFrame:frame];
 	if(self != nil)
 	{
 		// Colored Pattern setup
@@ -261,7 +264,7 @@ void UncoloredPatternCallback(void *info, CGContextRef context)
 		// Since this is an colored pattern, the parent colorspace is NULL, indicating that it only has an alpha value.
 		CGColorSpaceRef coloredPatternColorSpace = CGColorSpaceCreatePattern(NULL);
 		CGFloat alpha = 1.0;
-		// Since this pattern is colored, we'll create a CGColorRef for it to make drawing it more efficient.
+		// Since this pattern is colored, we'll create a CGColorRef for it to make drawing it easier and more efficient.
 		// From here on, the colored pattern is referenced entirely via the associated CGColorRef rather than the
 		// originally created CGPatternRef.
 		coloredPatternColor = CGColorCreateWithPattern(coloredPatternColorSpace, coloredPattern, &alpha);
@@ -297,7 +300,7 @@ void UncoloredPatternCallback(void *info, CGContextRef context)
 	[super dealloc];
 }
 
--(void)drawView:(QuartzView*)view inContext:(CGContextRef)context bounds:(CGRect)bounds
+-(void)drawInContext:(CGContextRef)context
 {
 	// Draw the colored pattern. Since we have a CGColorRef for this pattern, we just set
 	// that color current and draw.
