@@ -1,7 +1,7 @@
 /*
      File: QuartzBlendingViewController.m
- Abstract: A QuartzViewController subclass that manages a single QuartzView (that is expected to be of type QuartzBlendingView). This view controller also implements a UIPickerView to allow for the selection of foreground color, background color and blending mode.
-  Version: 2.2
+ Abstract: A QuartzViewController subclass that manages a QuartzBlendingView and a UI to allow for the selection of foreground color, background color and blending mode to demonstrate.
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,7 +41,7 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
@@ -95,6 +95,11 @@ static NSString *blendModes[] = {
 	// Should Quartz provide more blend modes in the future, here would be the place to add them!
 };
 static NSInteger blendModeCount = sizeof(blendModes) / sizeof(blendModes[0]);
+
+-(id)init
+{
+	return [super initWithNibName:@"BlendView" viewClass:[QuartzBlendingView class]];
+}
 
 // Setup the picker's default components.
 -(void)viewDidLoad
@@ -242,6 +247,7 @@ NSInteger colorSortByLuminance(id color1, id color2, void *context)
 				frame = CGRectInset(frame, 4.0, 4.0);
 				view = [[[UIView alloc] initWithFrame:frame] autorelease];
 				view.tag = kColorTag;
+				view.userInteractionEnabled = NO;
 			}
 			view.backgroundColor = [self.colors objectAtIndex:row];
 			break;
@@ -256,6 +262,7 @@ NSInteger colorSortByLuminance(id color1, id color2, void *context)
 				view.tag = kLabelTag;
 				view.opaque = NO;
 				view.backgroundColor = [UIColor clearColor];
+				view.userInteractionEnabled = NO;
 			}
 			UILabel *label = (UILabel*)view;
 			label.textColor = [UIColor blackColor];
@@ -272,7 +279,6 @@ NSInteger colorSortByLuminance(id color1, id color2, void *context)
 	qbv.destinationColor = [self.colors objectAtIndex:[picker selectedRowInComponent:0]];
 	qbv.sourceColor = [self.colors objectAtIndex:[picker selectedRowInComponent:1]];
 	qbv.blendMode = [picker selectedRowInComponent:2];
-	[qbv setNeedsDisplay];
 }
 
 @end

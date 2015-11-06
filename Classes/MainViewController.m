@@ -1,7 +1,7 @@
 /*
      File: MainViewController.m
  Abstract: Implements the main interface to the demo application, allowing the user to display which of Quartz's drawing facilities to demonstrate.
-  Version: 2.2
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,131 +41,193 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
 #import "MainViewController.h"
 #import "QuartzViewController.h"
-#import "QuartzLineDrawing.h"
-#import "QuartzPolyDrawing.h"
-#import "QuartzCurveDrawing.h"
-#import "QuartzImageDrawing.h"
-#import "QuartzRenderedDrawing.h"
+#import "QuartzLines.h"
+#import "QuartzPolygons.h"
+#import "QuartzCurves.h"
+#import "QuartzImages.h"
+#import "QuartzRendering.h"
 #import "QuartzBlending.h"
+#import "QuartzClipping.h"
 #import "QuartzBlendingViewController.h"
+#import "QuartzPolyViewController.h"
+#import "QuartzGradientViewController.h"
+#import "QuartzLineViewController.h"
+#import "QuartzDashViewController.h"	
 
-#define kCellIdentifier @"com.apple.samplecode.QuartzDemo.QuartzTableSelectionCellIdentifier"
+#define kCellIdentifier @"com.apple.samplecode.QuartzDemo.CellIdentifier"
 
 @interface MainViewController()
+-(void)addController:(QuartzViewController*)controller toSection:(NSString*)sectionName;
+-(NSInteger)sectionCount;
+-(NSInteger)sectionRowCount:(NSInteger)sectionIndex;
+-(NSString*)sectionTitle:(NSInteger)sectionIndex;
+-(QuartzViewController*)controllerAtIndexPath:(NSIndexPath*)path;
 @end
 
 @implementation MainViewController
 
--(void)awakeFromNib
-{	
+-(void)addController:(QuartzViewController*)controller toSection:(NSString*)sectionName
+{
+	if(sections == nil)
+	{
+		sections = [[NSMutableDictionary alloc] init];
+		sectionNames = [[NSMutableArray alloc] init];
+	}
+	NSMutableArray *list = [sections objectForKey:sectionName];
+	if(list == nil)
+	{
+		list = [NSMutableArray array];
+		[sections setValue:list forKey:sectionName];
+		[sectionNames addObject:sectionName];
+	}
+	[list addObject:controller];
+}
+
+-(NSInteger)sectionCount
+{
+	return sections.count;
+}
+
+-(NSInteger)sectionRowCount:(NSInteger)sectionIndex;
+{
+	return [[sections objectForKey:[sectionNames objectAtIndex:sectionIndex]] count];
+}
+
+-(NSString*)sectionTitle:(NSInteger)sectionIndex
+{
+	return [sectionNames objectAtIndex:sectionIndex];
+}
+
+-(QuartzViewController*)controllerAtIndexPath:(NSIndexPath*)path
+{
+	return [[sections objectForKey:[sectionNames objectAtIndex:path.section]] objectAtIndex:path.row];
+}
+
+-(void)viewDidLoad
+{
+	[super viewDidLoad];
+	
 	// create our view controllers
 	QuartzViewController *controller;
-	menuList = [[NSMutableArray alloc] init];
-	
+
 	// Line drawing demo
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[LineDrawingView class]];
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzLineView class]];
 	controller.title = @"Lines";
-	controller.demoInfo = @"LineDrawingView(QuartzLineDrawing.m)";
-	[menuList addObject:controller];
+	controller.demoInfo = @"QuartzLineView";
+	[self addController:controller toSection:@"QuartzLines.m"];
 	[controller release];
 
-	// Rectangle drawing demo
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[RectDrawingView class]];
-	controller.title = @"Rectangles";
-	controller.demoInfo = @"RectDrawingView(QuartzPolyDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Polygon drawing demo
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[PolyDrawingView class]];
-	controller.title = @"Polygons";
-	controller.demoInfo = @"PolyDrawingView(QuartzPolyDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Ellipses, arcs, and as a bonus round-rects!
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[EllipseArcDrawingView class]];
-	controller.title = @"Ellipses & Arcs";
-	controller.demoInfo = @"EllipseArcDrawingView(QuartzCurveDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Bezier and Quadratic curves
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[BezierDrawingView class]];
-	controller.title = @"Beziers & Quadratics";
-	controller.demoInfo = @"BezierDrawingView(QuartzCurveDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Images (drawing once and tiling an image)
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[ImageDrawingView class]];
-	controller.title = @"Images & Tiling";
-	controller.demoInfo = @"ImageDrawingView(QuartzImageDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Drawing a PDF page
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[PDFDrawingView class]];
-	controller.title = @"PDF";
-	controller.demoInfo = @"PDFDrawingView(QuartzImageDrawing.m)";
-	// Since the PDF page is primarily white, we'll use the default status bar style rather than the black status bar style.
-	controller.statusStyle = UIStatusBarStyleDefault;
-	[menuList addObject:controller];
-	[controller release];
-
-	// Drawing Patterns
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[PatternDrawingView class]];
-	controller.title = @"Patterns";
-	controller.demoInfo = @"PatternDrawingView(QuartzRenderedDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Drawing Linear and Radial Gradients
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[GradientDrawingView class]];
-	controller.title = @"Gradients";
-	controller.demoInfo = @"GradientDrawingView(QuartzRenderedDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-
-	// Showing the effect of stroke width
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[LineWidthDrawingView class]];
-	controller.title = @"Stroke Width";
-	controller.demoInfo = @"LineWidthDrawingView(QuartzLineDrawing.m)";
-	[menuList addObject:controller];
-	[controller release];
-	
-	// Showing the effects of line caps & joins
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[LineCapJoinDrawingView class]];
-	controller.title = @"Caps & Joins";
-	controller.demoInfo = @"LineCapJoinDrawingView(QuartzLineDrawing.m)";
-	[menuList addObject:controller];
+	// Showing the effects of line caps, joins & width
+	controller = [[QuartzLineViewController alloc] init];
+	controller.title = @"Caps, Joins & Width";
+	controller.demoInfo = @"QuartzCapJoinWidthView";
+	[self addController:controller toSection:@"QuartzLines.m"];
 	[controller release];
 	
 	// Showing the effects of line dash patterns
-	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[LineDashDrawingView class]];
+	controller = [[QuartzDashViewController alloc] init];
 	controller.title = @"Dash Patterns";
-	controller.demoInfo = @"LineDashDrawingView(QuartzLineDrawing.m)";
-	[menuList addObject:controller];
+	controller.demoInfo = @"QuartzDashView";
+	[self addController:controller toSection:@"QuartzLines.m"];
+	[controller release];
+
+	// Rectangle drawing demo
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzRectView class]];
+	controller.title = @"Rectangles";
+	controller.demoInfo = @"QuartzRectView";
+	[self addController:controller toSection:@"QuartzPolygons.m"];
+	[controller release];
+
+	// Polygon drawing demo
+	controller = [[QuartzPolyViewController alloc] init];
+	controller.title = @"Polygons";
+	controller.demoInfo = @"QuartzPolygonView";
+	[self addController:controller toSection:@"QuartzPolygons.m"];
+	[controller release];
+
+	// Ellipses, arcs, and as a bonus round-rects!
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzEllipseArcView class]];
+	controller.title = @"Ellipses & Arcs";
+	controller.demoInfo = @"QuartzEllipseArcView";
+	[self addController:controller toSection:@"QuartzCurves.m"];
+	[controller release];
+
+	// Bezier and Quadratic curves
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzBezierView class]];
+	controller.title = @"Beziers & Quadratics";
+	controller.demoInfo = @"QuartzBezierView";
+	[self addController:controller toSection:@"QuartzCurves.m"];
+	[controller release];
+
+	// Images (drawing once and tiling an image)
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzImageView class]];
+	controller.title = @"Images & Tiling";
+	controller.demoInfo = @"QuartzImageView";
+	[self addController:controller toSection:@"QuartzImages.m"];
+	[controller release];
+
+	// Drawing a PDF page
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzPDFView class]];
+	controller.title = @"PDF";
+	controller.demoInfo = @"QuartzPDFView";
+	// Since the PDF page is primarily white, we'll use the default status bar style rather than the black status bar style.
+	controller.statusStyle = UIStatusBarStyleDefault;
+	[self addController:controller toSection:@"QuartzImages.m"];
+	[controller release];
+
+	// Text
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzTextView class]];
+	controller.title = @"Text";
+	controller.demoInfo = @"QuartzTextView";
+	[self addController:controller toSection:@"QuartzImages.m"];
+	[controller release];
+
+	// Drawing Patterns
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzPatternView class]];
+	controller.title = @"Patterns";
+	controller.demoInfo = @"QuartzPatternView";
+	[self addController:controller toSection:@"QuartzRendering.m"];
+	[controller release];
+
+	// Drawing Linear and Radial Gradients
+	controller = [[QuartzGradientViewController alloc] init];
+	controller.title = @"Gradients";
+	controller.demoInfo = @"QuartzGradientView";
+	[self addController:controller toSection:@"QuartzRendering.m"];
 	[controller release];
 
 	// Blending Demo
-	// Blending demo won't scroll for some reason...
-	controller = [[QuartzBlendingViewController alloc] initWithNibName:@"BlendView" viewClass:[QuartzBlendingView class]];
-	controller.title = @"Blending Demo";
-	controller.demoInfo = @"QuartzBlending(QuartzBlending.m)";
-	[menuList addObject:controller];
+	controller = [[QuartzBlendingViewController alloc] init];
+	controller.title = @"Blending Modes";
+	controller.demoInfo = @"QuartzBlendingView";
+	[self addController:controller toSection:@"QuartzBlending.m"];
+	[controller release];
+
+	// Clipping Demo
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzClippingView class]];
+	controller.title = @"Clipping";
+	controller.demoInfo = @"QuartzClippingView";
+	[self addController:controller toSection:@"QuartzClipping.m"];
+	[controller release];
+
+	// Masking Demo
+	controller = [[QuartzViewController alloc] initWithNibName:@"DemoView" viewClass:[QuartzMaskingView class]];
+	controller.title = @"Masking";
+	controller.demoInfo = @"QuartzMaskingView";
+	[self addController:controller toSection:@"QuartzClipping.m"];
 	[controller release];
 }
 
 - (void)dealloc
 {
-	[menuList release];
+	[sections release];
+	[sectionNames release];
 	[super dealloc];
 }
 
@@ -188,7 +250,7 @@
 // the table's selection has changed, switch to that item's UIViewController
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-	UIViewController *targetViewController = [menuList objectAtIndex: indexPath.row];
+	QuartzViewController *targetViewController = [self controllerAtIndexPath:indexPath];
 	[[self navigationController] pushViewController:targetViewController animated:YES];
 }
 
@@ -197,13 +259,18 @@
 // tell our table how many sections or groups it will have (always 1(our case)
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-	return 1;
+	return [self sectionCount];
 }
 
 // tell our table how many rows it will have,(our case the size of our menuList
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-	return [menuList count];
+	return [self sectionRowCount:section];
+}
+
+-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	return [self sectionTitle:section];
 }
 
 // tell our table what kind of cell to use and its title for the given row
@@ -214,7 +281,7 @@
 	{
 		cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:kCellIdentifier] autorelease];
 	}
-	QuartzViewController *vc = [menuList objectAtIndex:indexPath.row];
+	QuartzViewController *vc = [self controllerAtIndexPath:indexPath];
 	cell.textLabel.text = vc.title;
 	cell.detailTextLabel.text = vc.demoInfo;
 	cell.detailTextLabel.adjustsFontSizeToFitWidth = YES;

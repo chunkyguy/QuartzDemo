@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzLineViewController.m
+ Abstract: A QuartzViewController subclass that manages a QuartzCapJoinWidthView and a UI to allow for the selection of the line cap, line join and line width to demonstrate.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,35 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import "QuartzLineViewController.h"
+#import "QuartzLines.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
+@interface QuartzLineViewController()
 @end
 
-@implementation AppDelegate
+@implementation QuartzLineViewController
 
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+-(id)init
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	return [super initWithNibName:@"LineView" viewClass:[QuartzCapJoinWidthView class]];
 }
 
--(void)dealloc
+-(IBAction)lineCap:(id)sender
 {
-	[navigationController release];
-    [window release];    
-    [super dealloc];
+	QuartzCapJoinWidthView *qld = (QuartzCapJoinWidthView*)self.quartzView;
+	qld.cap = [sender selectedSegmentIndex];
+}
+
+-(IBAction)lineJoin:(id)sender
+{
+	QuartzCapJoinWidthView *qld = (QuartzCapJoinWidthView*)self.quartzView;
+	qld.join = [sender selectedSegmentIndex];
+}
+
+-(IBAction)lineWidth:(id)sender
+{
+	QuartzCapJoinWidthView *qld = (QuartzCapJoinWidthView*)self.quartzView;
+	qld.width = ((UISlider*)sender).value;
 }
 
 @end
-

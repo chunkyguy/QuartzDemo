@@ -1,7 +1,7 @@
 /*
      File: QuartzBlendingViewController.h
- Abstract: A QuartzViewController subclass that manages a single QuartzView (that is expected to be of type QuartzBlendingView). This view controller also implements a UIPickerView to allow for the selection of foreground color, background color and blending mode.
-  Version: 2.2
+ Abstract: A QuartzViewController subclass that manages a QuartzBlendingView and a UI to allow for the selection of foreground color, background color and blending mode to demonstrate.
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,7 +41,7 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
@@ -52,5 +52,7 @@
 {
 	IBOutlet UIPickerView *picker;
 }
+
+-(id)init;
 
 @end

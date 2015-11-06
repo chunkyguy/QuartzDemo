@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzGradientViewController.h
+ Abstract: A QuartzViewController subclass that manages a QuartzGradientView and a UI to allow for the selection of gradient type and if the gradient extends past its start or end point.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,16 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzViewController.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+@interface QuartzGradientViewController : QuartzViewController
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
 }
 
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
-}
+-(id)init;
+-(IBAction)gradientType:(id)sender;
+-(IBAction)extendsPastStart:(id)sender;
+-(IBAction)extendsPastEnd:(id)sender;
 
 @end
-

@@ -1,7 +1,7 @@
 /*
      File: QuartzView.m
- Abstract: A UIView subclass that is the super class of the other views demonstrated in this sample.
-  Version: 2.2
+ Abstract: A UIView subclass that is the super class of the other demonstration views in this sample.
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,13 +41,25 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
 #import "QuartzView.h"
 
 @implementation QuartzView
+
+-(id)initWithFrame:(CGRect)frame
+{
+	self = [super initWithFrame:frame];
+	if(self != nil)
+	{
+		self.backgroundColor = [UIColor blackColor];
+		self.opaque = YES;
+		self.clearsContextBeforeDrawing = YES;
+	}
+	return self;
+}
 
 -(void)drawInContext:(CGContextRef)context
 {

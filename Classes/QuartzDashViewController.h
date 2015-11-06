@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzDashViewController.h
+ Abstract: A QuartzViewController subclass that manages a QuartzDashView and a UI to allow for the selection of the line dash pattern and phase.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,17 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzViewController.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+@interface QuartzDashViewController : QuartzViewController<UIPickerViewDelegate, UIPickerViewDataSource>
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	IBOutlet UIPickerView *picker;
+	IBOutlet UISlider *phase;
 }
 
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
-}
+-(id)init;
+-(IBAction)dashPhase;
+-(IBAction)reset;
 
 @end
-

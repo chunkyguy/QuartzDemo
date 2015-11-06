@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzRendering.h
+ Abstract: Demonstrates using Quartz for drawing gradients (QuartzGradientView) and patterns (QuartzPatternView).
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,37 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzView.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+enum
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	kLinearGradient = 0,
+	kRadialGradient = 1
+};
+
+@interface QuartzGradientView : QuartzView
+{
+	CGGradientRef gradient;
+	int type;
+	BOOL extendsPastStart, extendsPastEnd;
 }
 
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
-}
+-(void)drawInContext:(CGContextRef)context;
+@property(nonatomic, readwrite) int type;
+@property(nonatomic, readwrite) BOOL extendsPastStart;
+@property(nonatomic, readwrite) BOOL extendsPastEnd;
 
 @end
 
+@interface QuartzPatternView : QuartzView
+{
+	CGColorRef coloredPatternColor;
+	
+	CGPatternRef uncoloredPattern;
+	CGColorSpaceRef uncoloredPatternColorSpace;
+}
+
+-(void)drawInContext:(CGContextRef)context;
+
+@end

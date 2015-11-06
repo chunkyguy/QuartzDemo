@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzImages.h
+ Abstract: Demonstrates using Quartz for drawing images (QuartzImageView), PDF files (QuartzPDFView), and text (QuartzTextView).
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,31 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzView.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+@interface QuartzImageView : QuartzView
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	CGImageRef image;
 }
 
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
-}
+-(void)drawInContext:(CGContextRef)context;
 
 @end
 
+@interface QuartzPDFView : QuartzView
+{
+	CGPDFDocumentRef pdf;
+}
+
+-(void)drawInContext:(CGContextRef)context;
+
+@end
+
+@interface QuartzTextView : QuartzView
+{
+}
+
+-(void)drawInContext:(CGContextRef)context;
+
+@end

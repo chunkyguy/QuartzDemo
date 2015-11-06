@@ -1,7 +1,7 @@
 /*
      File: QuartzViewController.m
  Abstract: A UIViewController subclass that manages a single QuartzView and allows the user to zoom and pan around the hosted QuartzView.
-  Version: 2.2
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,7 +41,7 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
@@ -53,7 +53,7 @@
 
 @implementation QuartzViewController
 
-@synthesize barStyle, statusStyle, scrollView, demoInfo, quartzView;
+@synthesize barStyle, statusStyle, scrollView, demoInfo;
 
 -(id)initWithNibName:(NSString*)nib viewClass:(Class)vc;
 {
@@ -72,26 +72,28 @@
 	return self;
 }
 
+-(QuartzView*)quartzView
+{
+	if(quartzView == nil)
+	{
+		quartzView = [[viewClass alloc] initWithFrame:CGRectZero];
+	}
+	return quartzView;
+}
+
 -(void)viewDidLoad
 {
 	// Add the QuartzView
-	quartzView = [[viewClass alloc] initWithFrame:CGRectZero];
-	[scrollView addSubview:quartzView];
+	[scrollView addSubview:self.quartzView];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+-(BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	// Return YES for supported orientations.
 	return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
-- (void)didReceiveMemoryWarning
-{
-	// Release anything that's not essential, such as cached data.
-	[super didReceiveMemoryWarning]; // Releases the view if it doesn't have a superview.
-}
-
--(void)viewWillUnload
+-(void)viewDidUnload
 {
 	[quartzView release]; quartzView = nil;
 	[scrollView release]; scrollView = nil;
@@ -100,15 +102,15 @@
 #pragma mark UIViewController delegate methods
 
 // called before this controller's view has appeared
-- (void)viewWillAppear:(BOOL)animated
+-(void)viewWillAppear:(BOOL)animated
 {
 	// for aesthetic reasons make the nav bar an appropriate color (defaulting to black) for this page
 	self.navigationController.navigationBar.barStyle = barStyle;
 	// ditto for the status bar.
-	[[UIApplication sharedApplication] setStatusBarStyle:statusStyle animated:YES];
+	[[UIApplication sharedApplication] setStatusBarStyle:statusStyle animated:animated];
 	// Reset the scroll view to 1.0 zoom
 	[scrollView setZoomScale:1.0 animated:NO];
-	quartzView.frame = scrollView.bounds;
+	self.quartzView.frame = scrollView.bounds;
 	scrollView.contentSize = scrollView.bounds.size;
 }
 
@@ -116,7 +118,7 @@
 
 -(UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
 {
-	return quartzView;
+	return self.quartzView;
 }
 
 @end

@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzPolyViewController.h
+ Abstract: A QuartzViewController subclass that manages a QuartzPolygonView and a UI to allow for the selection of the stroke and fill mode to demonstrate.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,14 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzViewController.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+@interface QuartzPolyViewController : QuartzViewController<UIPickerViewDelegate, UIPickerViewDataSource>
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	IBOutlet UIPickerView *picker;
 }
 
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
-}
+-(id)init;
 
 @end
-

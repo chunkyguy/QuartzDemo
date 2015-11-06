@@ -6,7 +6,7 @@ In this sample stroked paths are typically drawn in white. Lines and other graph
 
 Build Requirements
 
-iPhone SDK 3.0
+iPhone SDK 3.1.2
 
 Runtime Requirements
 
@@ -15,54 +15,64 @@ iPhone OS 3.0
 Source File List
 
 Classes/AppDelegate.h/m:
-The application delegate. It creates and sets up the view & navigation controllers for the application.
+The application delegate. It creates and configures the view & navigation controllers for the application.
 
 Classes/MainViewController.h/m:
 Implements the main interface to the demo application, allowing the user to display which of Quartz's drawing facilities to demonstrate.
 
 Classes/QuartzView.h/m:
-A UIView subclass that is the super class of the other views demonstrated in this sample.
+A UIView subclass that is the super class of the other demonstration views in this sample.
 
 Classes/QuartzViewController.h/m:
 A UIViewController subclass that manages a single QuartzView and allows the user to zoom and pan around the hosted QuartzView.
 
 Classes/QuartzBlendingViewController.h/m:
-A QuartzViewController subclass that manages a single QuartzView (that is expected to be of type QuartzBlendingView). This view controller also implements a UIPickerView to allow for the selection of foreground color, background color and blending mode.
+A QuartzViewController subclass that manages a QuartzBlendingView and a UI to allow for the selection of foreground color, background color and blending mode to demonstrate.
 
-Quartz/QuartzLineDrawing.h/m:
-Demonstrations of Quartz line drawing capabilties (LineDrawingView), including setting the stroke width (LineWidthDrawingView), cap & join (LineCapJoinDrawingView) and dash (LineDashDrawingView) properties
-Demonstrated APIs: CGContextSetRGBStrokeColor, CGContextStrokePath, CGContextMoveToPoint, CGContextAddLineToPoint, CGContextAddLines, CGContextStrokeLineSegments, CGContextSetLineWidth, CGContextSetLineCap, CGContextSetLineJoin, CGContextSetLineDash, CGContextSaveGState, CGContextRestoreGState.
+Classes/QuartzPolyViewController.h/m:
+A QuartzViewController subclass that manages a QuartzPolygonView and a UI to allow for the selection of the stroke and fill mode to demonstrate.
 
-Quartz/QuartzPolyDrawing.h/m:
-Demonstrations of using Quartz to stroke & fill rectangles (RectDrawingView) and polygons (PolyDrawingView).
-Demonstrated APIs: CGContextSetRGBFillColor, CGContextAddRect, CGContextStrokeRect, CGContextAddRects, CGContextFillRect, CGContextFillPath, CGContextSaveGState, CGContextRestoreGState, CGContextClosePath, CGContextEOFillPath, CGContextDrawPath.
+Classes/QuartzGradientController.h/m:
+A QuartzViewController subclass that manages a QuartzGradientView and a UI to allow for the selection of gradient type and if the gradient extends past its start or end point.
 
-Quartz/QuartzCurveDrawing.h/m:
-Demonstrates how to use Quartz to draw ellipses & arcs (EllipseArcDrawingView) and bezier & quadratic curves (BezierDrawingView).
-Demonstrated APIs: CGContextAddEllipseInRect, CGContextFillEllipseInRect, CGContextAddArc, CGContextAddArcToPoint, CGContextAddCurveToPoint, CGContextAddQuadCurveToPoint.
+Classes/QuartzLineViewController.h/m:
+A QuartzViewController subclass that manages a QuartzCapJoinWidthView and a UI to allow for the selection of the line cap, line join and line width to demonstrate.
 
-Quartz/QuartzImageDrawing.h/m:
-Demonstrations of using Quartz for drawing images (ImageDrawingView) and PDF files (PDFDrawingView)
-Demonstrated APIs: CGContextDrawImage, CGContextClipToRect, CGContextDrawTiledImage, CGPDFDocumentCreateWithURL, CGContextTranslateCTM, CGContextScaleCTM, CGPDFDocumentGetPage, CGPDFPageGetDrawingTransform, CGContextConcatCTM, CGContextDrawPDFPage.
+Classes/QuartzDashViewController.h/m:
+A QuartzViewController subclass that manages a QuartzDashView and a UI to allow for the selection of the line dash pattern and phase.
 
-Quartz/QuartzRenderedDrawing.h/.m
-Demonstrations of using Quartz for drawing gradients (GradientDrawingView) and patterns (PatternDrawingView)
-Demonstrated APIs: CGGradientCreateWithColorComponents, CGContextDrawLinearGradient, CGContextDrawRadialGradient, CGPatternCreate, CGColorSpaceCreatePattern, CGColorCreateWithPattern, CGColorSpaceCreateDeviceRGB, CGContextSetFillColorWithColor, CGContextSetStrokeColorWithColor, CGContextSetFillColorSpace, CGContextSetFillPattern, CGContextSetStrokeColorSpace, CGContextSetStrokePattern.
+Quartz/QuartzLines.h/m:
+Demonstrates Quartz line drawing facilities (QuartzLineView), including dash patterns (QuartzDashView), stroke width, line cap and line join (QuartzCapJoinWidthView).
 
-Quartz/QuartzBlending.h/.m
-Demonstrations of Quartz Blending modes (QuartzBlendingView)
-Demonstrated APIs: CGContextSetGrayFillColor, CGContextFillRect, CGContextSetBlendMode, CGContextSetFillColorWithColor.
+Quartz/QuartzPolygons.h/m:
+Demonstrates using Quartz to stroke & fill rectangles (QuartzRectView) and polygons (QuartzPolygonView).
+
+Quartz/QuartzCurves.h/m:
+Demonstrates using Quartz to draw ellipses & arcs (QuartzEllipseArcView) and bezier & quadratic curves (QuartzBezierView).
+
+Quartz/QuartzImages.h/m:
+Demonstrates using Quartz for drawing images (QuartzImageView), PDF files (QuartzPDFView), and text (QuartzTextView).
+
+Quartz/QuartzRendering.h/.m:
+Demonstrates using Quartz for drawing gradients (QuartzGradientView) and patterns (QuartzPatternView).
+
+Quartz/QuartzBlending.h/.m:
+Demonstrates Quartz Blend modes (QuartzBlendingView).
+
+Quartz/QuartzClipping.h/m:
+Demonstrates using Quartz for clipping (QuartzClippingView) and masking (QuartzMaskingView).
 
 main.m:
 The application's main entry point.
 
 Changes From Previous Versions
 
+2.3: Added masking and clipping demos in QuartzClipping.h/m. Made some of the demos dynamic. Reorganized some of the class names.
 2.2: Changed the demo classes to be subclasses of the QuartzView class. Improved QuartzViewController to allow the user to zoom and pan the demo views, and to improve its low memory handling. Added a Blending demo.
 2.1: Fixed a memory management error in the MainViewController.
 2.0: First public release.
-1.3: Now uses nibs. Moved gradient drawing into QuartzRenderedDrawing.h/.m and added a pattern drawing demo.
+1.3: Now uses nibs. Moved gradient drawing into QuartzRendering.h/m and added a pattern drawing demo.
 1.2: Updated for Beta 5 for changes to UITableViewDelegate.
 1.1: Updated for Beta 4 for changes to UINavigationBarController and UINavigationBar.
 
-Copyright (C) 2008 Apple Inc. All rights reserved.
+Copyright (C) 2008-2010 Apple Inc. All rights reserved.

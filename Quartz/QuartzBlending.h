@@ -1,7 +1,7 @@
 /*
      File: QuartzBlending.h
- Abstract: Demonstration of Quartz blending facilities
-  Version: 2.2
+ Abstract: Demonstrates Quartz Blend modes (QuartzBlendingView).
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,7 +41,7 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
@@ -55,6 +55,7 @@
 	CGBlendMode blendMode;
 }
 
+-(void)drawInContext:(CGContextRef)context;
 @property(nonatomic, readwrite, retain) UIColor *sourceColor;
 @property(nonatomic, readwrite, retain) UIColor *destinationColor;
 @property(nonatomic, readwrite) CGBlendMode blendMode;

@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzLines.h
+ Abstract: Demonstrates Quartz line drawing facilities (QuartzLineView), including dash patterns (QuartzDashView), stroke width, line cap and line join (QuartzCapJoinWidthView).
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,43 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzView.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+@interface QuartzLineView : QuartzView
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
 }
 
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
-}
+-(void)drawInContext:(CGContextRef)context;
 
 @end
 
+#pragma mark -
+
+@interface QuartzDashView : QuartzView
+{
+	CGFloat dashPhase;
+	CGFloat dashPattern[10];
+	size_t dashCount;
+}
+
+-(void)drawInContext:(CGContextRef)context;
+@property(nonatomic, readwrite) CGFloat dashPhase;
+-(void)setDashPattern:(CGFloat*)pattern count:(size_t)count;
+
+@end
+
+#pragma mark -
+
+@interface QuartzCapJoinWidthView : QuartzView
+{
+	CGLineCap cap;
+	CGLineJoin join;
+	CGFloat width;
+}
+
+@property(nonatomic, readwrite) CGLineCap cap;
+@property(nonatomic, readwrite) CGLineJoin join;
+@property(nonatomic, readwrite) CGFloat width;
+
+@end

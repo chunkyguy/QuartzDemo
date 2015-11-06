@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzPolyViewController.m
+ Abstract: A QuartzViewController subclass that manages a QuartzPolygonView and a UI to allow for the selection of the stroke and fill mode to demonstrate.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,69 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import "QuartzPolyViewController.h"
+#import "QuartzPolygons.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
+@interface QuartzPolyViewController()
+@property(nonatomic, readwrite, retain) UIPickerView *picker;
 @end
 
-@implementation AppDelegate
+@implementation QuartzPolyViewController
 
-@synthesize window, navigationController;
+@synthesize picker;
 
--(void)applicationDidFinishLaunching:(UIApplication *)application
+// These strings represent the actual drawing mode constants
+// that are passed to CGContextDrawpath and as such
+// should not be localized in the context of this sample
+static NSString *drawModes[] = {
+	@"Fill",//0
+	@"EOFill",//1
+	@"Stroke",//2
+	@"FillStroke",//3
+	@"EOFillStroke"//4
+};
+static NSInteger drawModeCount = sizeof(drawModes) / sizeof(drawModes[0]);
+
+-(id)init
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	return [super initWithNibName:@"PolyView" viewClass:[QuartzPolygonView class]];
+}
+
+// Setup the picker's default components.
+-(void)viewDidLoad
+{
+	[super viewDidLoad];
+	QuartzPolygonView *pdv = (QuartzPolygonView*)self.quartzView;
+	[picker selectRow:pdv.drawingMode inComponent:0 animated:NO];
 }
 
 -(void)dealloc
 {
-	[navigationController release];
-    [window release];    
-    [super dealloc];
+	[picker release]; picker = nil;
+	[super dealloc];
+}
+
+#pragma mark UIPickerViewDelegate & UIPickerViewDataSource methods
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+	return 1;
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+	return drawModeCount;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component;
+{
+	return drawModes[row];
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+	QuartzPolygonView *pdv = (QuartzPolygonView*)self.quartzView;
+	pdv.drawingMode = [picker selectedRowInComponent:0];
 }
 
 @end
-

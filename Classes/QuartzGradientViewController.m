@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzGradientViewController.m
+ Abstract: A QuartzViewController subclass that manages a QuartzGradientView and a UI to allow for the selection of gradient type and if the gradient extends past its start or end point.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,35 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import "QuartzGradientViewController.h"
+#import "QuartzRendering.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
+@interface QuartzGradientViewController()
 @end
 
-@implementation AppDelegate
+@implementation QuartzGradientViewController
 
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+-(id)init
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	return [super initWithNibName:@"GradientView" viewClass:[QuartzGradientView class]];
 }
 
--(void)dealloc
+-(IBAction)gradientType:(id)sender
 {
-	[navigationController release];
-    [window release];    
-    [super dealloc];
+	QuartzGradientView *gdv = (QuartzGradientView*)self.quartzView;
+	gdv.type = [sender selectedSegmentIndex];
+}
+
+-(IBAction)extendsPastStart:(id)sender
+{
+	QuartzGradientView *gdv = (QuartzGradientView*)self.quartzView;
+	gdv.extendsPastStart = [sender isOn];
+}
+
+-(IBAction)extendsPastEnd:(id)sender
+{
+	QuartzGradientView *gdv = (QuartzGradientView*)self.quartzView;
+	gdv.extendsPastEnd = [sender isOn];
 }
 
 @end
-

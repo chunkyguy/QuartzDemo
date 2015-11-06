@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzClipping.h
+ Abstract: Demonstrates using Quartz for clipping (QuartzClippingView) and masking (QuartzMaskingView).
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,22 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import <UIKit/UIKit.h>
+#import "QuartzView.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
-@end
-
-@implementation AppDelegate
-
-@synthesize window, navigationController;
-
--(void)applicationDidFinishLaunching:(UIApplication *)application
+@interface QuartzClippingView : QuartzView
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
-}
-
--(void)dealloc
-{
-	[navigationController release];
-    [window release];    
-    [super dealloc];
+	CGImageRef image;
 }
 
 @end
 
+#pragma mark -
+
+@interface QuartzMaskingView : QuartzView
+{
+	CGImageRef maskingImage;
+	CGImageRef alphaImage;
+}
+
+@end

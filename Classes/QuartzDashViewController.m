@@ -1,6 +1,6 @@
 /*
-     File: AppDelegate.m
- Abstract: The application delegate. It creates & configures the view and navigation controllers for the application.
+     File: QuartzDashViewController.m
+ Abstract: A QuartzViewController subclass that manages a QuartzDashView and a UI to allow for the selection of the line dash pattern and phase.
   Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
@@ -45,30 +45,94 @@
  
 */
 
-#import "AppDelegate.h"
-#import "MainViewController.h"
+#import "QuartzDashViewController.h"
+#import "QuartzLines.h"
 
-@interface AppDelegate()
-@property(nonatomic, readwrite, retain) UIWindow *window;
-@property(nonatomic, readwrite, retain) UINavigationController *navigationController;
+@interface QuartzDashViewController()
+@property(nonatomic, readwrite, retain) UIPickerView *picker;
 @end
 
-@implementation AppDelegate
+@implementation QuartzDashViewController
 
-@synthesize window, navigationController;
+@synthesize picker;
 
--(void)applicationDidFinishLaunching:(UIApplication *)application
+// These strings represent the actual drawing mode constants
+// that are passed to CGContextDrawpath and as such
+// should not be localized in the context of this sample
+typedef struct {
+	CGFloat pattern[5];
+	size_t count;
+} Pattern;
+static Pattern patterns[] = {
+	{{10.0, 10.0}, 2},
+	{{10.0, 20.0, 10.0}, 3},
+	{{10.0, 20.0, 30.0}, 3},
+	{{10.0, 20.0, 10.0, 30.0}, 4},
+	{{10.0, 10.0, 20.0, 20.0}, 4},
+	{{10.0, 10.0, 20.0, 30.0, 50.0}, 5},
+};
+static NSInteger patternCount = sizeof(patterns) / sizeof(patterns[0]);
+
+-(id)init
 {
-	// add the navigation controller's view to the window
-	[window addSubview: navigationController.view];
+	return [super initWithNibName:@"DashView" viewClass:[QuartzDashView class]];
+}
+
+// Setup the picker's default components.
+-(void)viewDidLoad
+{
+	[super viewDidLoad];
+	QuartzDashView *ldv = (QuartzDashView*)self.quartzView;
+	[ldv setDashPattern:patterns[0].pattern count:patterns[0].count];
+	[picker selectRow:0 inComponent:0 animated:NO];
 }
 
 -(void)dealloc
 {
-	[navigationController release];
-    [window release];    
-    [super dealloc];
+	[picker release]; picker = nil;
+	[super dealloc];
+}
+
+-(IBAction)dashPhase
+{
+	QuartzDashView *ldv = (QuartzDashView*)self.quartzView;
+	ldv.dashPhase = phase.value;
+}
+
+-(IBAction)reset
+{
+	QuartzDashView *ldv = (QuartzDashView*)self.quartzView;
+	ldv.dashPhase = 0.0;
+	phase.value = 0.0;
+}
+
+#pragma mark UIPickerViewDelegate & UIPickerViewDataSource methods
+
+-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView
+{
+	return 1;
+}
+
+-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+	return patternCount;
+}
+
+-(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component;
+{
+	Pattern p = patterns[row];
+	NSMutableString *title = [NSMutableString stringWithFormat:@"%.0f", p.pattern[0]];
+	for(size_t i = 1; i < p.count; ++i)
+	{
+		[title appendFormat:@"-%.0f", p.pattern[i]];
+	}
+	return title;
+}
+
+-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+	QuartzDashView *ldv = (QuartzDashView*)self.quartzView;
+	[ldv setDashPattern:patterns[row].pattern count:patterns[row].count];
 }
 
 @end
-

@@ -1,7 +1,7 @@
 /*
      File: MainViewController.h
  Abstract: Implements the main interface to the demo application, allowing the user to display which of Quartz's drawing facilities to demonstrate.
-  Version: 2.2
+  Version: 2.3
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
@@ -41,7 +41,7 @@
  STRICT LIABILITY OR OTHERWISE, EVEN IF APPLE HAS BEEN ADVISED OF THE
  POSSIBILITY OF SUCH DAMAGE.
  
- Copyright (C) 2009 Apple Inc. All Rights Reserved.
+ Copyright (C) 2010 Apple Inc. All Rights Reserved.
  
 */
 
@@ -49,7 +49,8 @@
 
 @interface MainViewController : UITableViewController
 {
-	NSMutableArray *menuList;
+	NSMutableDictionary *sections;
+	NSMutableArray *sectionNames;
 }
 
 @end
