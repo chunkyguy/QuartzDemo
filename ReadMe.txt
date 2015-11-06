@@ -6,11 +6,11 @@ In this sample stroked paths are typically drawn in white. Lines and other graph
 
 Build Requirements
 
-iPhone SDK 3.1.2
+iOS 4.0 SDK
 
 Runtime Requirements
 
-iPhone OS 3.0
+iPhone OS 3.2 or later
 
 Source File List
 
@@ -67,6 +67,8 @@ The application's main entry point.
 
 Changes From Previous Versions
 
+2.5: Changed deployment target back to iPhone OS 3.2 and added CFBundleIconFiles in Info.plist.
+2.4: Upgraded project to build with the iOS 4.0 SDK.
 2.3: Added masking and clipping demos in QuartzClipping.h/m. Made some of the demos dynamic. Reorganized some of the class names.
 2.2: Changed the demo classes to be subclasses of the QuartzView class. Improved QuartzViewController to allow the user to zoom and pan the demo views, and to improve its low memory handling. Added a Blending demo.
 2.1: Fixed a memory management error in the MainViewController.

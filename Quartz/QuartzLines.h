@@ -1,7 +1,7 @@
 /*
      File: QuartzLines.h
  Abstract: Demonstrates Quartz line drawing facilities (QuartzLineView), including dash patterns (QuartzDashView), stroke width, line cap and line join (QuartzCapJoinWidthView).
-  Version: 2.3
+  Version: 2.5
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following

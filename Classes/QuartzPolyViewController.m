@@ -1,7 +1,7 @@
 /*
      File: QuartzPolyViewController.m
  Abstract: A QuartzViewController subclass that manages a QuartzPolygonView and a UI to allow for the selection of the stroke and fill mode to demonstrate.
-  Version: 2.3
+  Version: 2.5
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following

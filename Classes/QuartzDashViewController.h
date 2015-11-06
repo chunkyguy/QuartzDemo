@@ -1,7 +1,7 @@
 /*
      File: QuartzDashViewController.h
  Abstract: A QuartzViewController subclass that manages a QuartzDashView and a UI to allow for the selection of the line dash pattern and phase.
-  Version: 2.3
+  Version: 2.5
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following

@@ -1,7 +1,7 @@
 /*
      File: QuartzLineViewController.h
  Abstract: A QuartzViewController subclass that manages a QuartzCapJoinWidthView and a UI to allow for the selection of the line cap, line join and line width to demonstrate.
-  Version: 2.3
+  Version: 2.5
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following

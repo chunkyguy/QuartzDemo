@@ -1,7 +1,7 @@
 /*
      File: MainViewController.m
  Abstract: Implements the main interface to the demo application, allowing the user to display which of Quartz's drawing facilities to demonstrate.
-  Version: 2.3
+  Version: 2.5
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following

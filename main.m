@@ -1,7 +1,7 @@
 /*
     File: main.m
 Abstract: The application's main entry point
- Version: 2.3
+ Version: 2.5
 
 Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
 Inc. ("Apple") in consideration of your agreement to the following

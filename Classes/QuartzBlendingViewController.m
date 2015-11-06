@@ -1,7 +1,7 @@
 /*
      File: QuartzBlendingViewController.m
  Abstract: A QuartzViewController subclass that manages a QuartzBlendingView and a UI to allow for the selection of foreground color, background color and blending mode to demonstrate.
-  Version: 2.3
+  Version: 2.5
  
  Disclaimer: IMPORTANT:  This Apple software is supplied to you by Apple
  Inc. ("Apple") in consideration of your agreement to the following
