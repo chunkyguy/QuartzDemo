@@ -166,7 +166,7 @@ class QuartzBlendingViewController: UIViewController, UIPickerViewDelegate, UIPi
             return NSAttributedString(string: blendModes[row])
         }
         let squareString: String = String(format: "%C", 0x2588) // This is a Unicode character for a simple square block.
-        let attributes = [ NSForegroundColorAttributeName : colors[row], NSBackgroundColorAttributeName : UIColor.lightGray ]
+        let attributes = [ NSAttributedStringKey.foregroundColor : colors[row], NSAttributedStringKey.backgroundColor : UIColor.lightGray ]
         return NSAttributedString(string: squareString, attributes:attributes)
     }
 
