@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19162" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19144"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="UIApplication">
+            <connections>
+                <outlet property="delegate" destination="14" id="17"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <window opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" visibleAtLaunch="YES" resizesToFullScreen="NO" id="2">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <nil key="simulatedStatusBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="92" y="31"/>
+        </window>
+        <customObject id="14" userLabel="AppDelegate" customClass="AppDelegate">
+            <connections>
+                <outlet property="navigationController" destination="3" id="16"/>
+                <outlet property="window" destination="2" id="15"/>
+            </connections>
+        </customObject>
+        <navigationController id="3">
+            <extendedEdge key="edgesForExtendedLayout"/>
+            <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+            <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5">
+                <rect key="frame" x="0.0" y="-44" width="414" height="44"/>
+                <autoresizingMask key="autoresizingMask"/>
+            </navigationBar>
+            <viewControllers>
+                <tableViewController title="QuartzDemo" id="24" customClass="MainViewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="25">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="808"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <connections>
+                            <outlet property="dataSource" destination="24" id="31"/>
+                            <outlet property="delegate" destination="24" id="32"/>
+                        </connections>
+                    </tableView>
+                    <extendedEdge key="edgesForExtendedLayout"/>
+                    <navigationItem key="navigationItem" title="QuartzDemo" id="28"/>
+                </tableViewController>
+            </viewControllers>
+            <point key="canvasLocation" x="159" y="538"/>
+        </navigationController>
+    </objects>
+</document>
